@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Список</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="./to-do.css">
+</head>
+<body>
+    form(action= "/" method="post" enctype="multipart/form-data" class="add-form")
+        input.input(type="text" name="description")
+        input.input(type="date" name="date")
+        input(type="file" name="file")
+        button(type="submit") Create note
+    form(action="/sort", method="post") 
+        select#sort-cat(name="category")
+            option(value=0) Date  
+            option(value=1) Status
+        select#sort-v(name="variant")
+            option(value=0) Ascending
+            option(value=1) Descending
+        button(type="submit") Sort 
+    ul.tasks
+        each task in tasks
+            li#status.task(data-status=task.status)
+                div
+                    h4 Description: #{task.description}
+                    p Date: #{task.date ? task.date.toDateString() : "No date"}
+                    div.status-container(data-id=task.id)
+                        label Queued:
+                            input(type="radio", name="status" value=0)
+                        label Processing:
+                            input(type="radio", name="status" value=1)
+                        label Completed:
+                            input(type="radio", name="status" value=2)    
+                    div
+                        button.dload-btn
+                            a.dload-file(data-id=task.id download="innocent-file") Upload PDF 🡇
+                div
+                    button.delete-btn(data-id=task.id) Delete
+    <script src="./to-do.js"></script>
+</body>
+<html>
