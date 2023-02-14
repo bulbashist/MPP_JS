@@ -38,9 +38,11 @@ body {
   width: 100px;
   height: 50px;
   border-radius: 25px;
+  padding: 10px;
 }
 
 .dload-file {
+  word-wrap: break-word;
   text-decoration: none;
 }
 

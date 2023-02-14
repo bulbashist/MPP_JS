@@ -19,7 +19,7 @@ export enum SortVariant {
 export interface ITask {
   id: number;
   date: Date | null;
-  file?: Uint8Array | null | undefined;
+  file: Uint8Array | null;
   status: Status;
-  description?: string;
+  description: string;
 }

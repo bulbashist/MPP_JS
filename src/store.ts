@@ -16,28 +16,31 @@ class TasksStorage {
     return this._data;
   }
 
-  addTask(taskInfo: Omit<ITask, "id">) {
+  addTask(taskInfo: Omit<ITask, "id">): boolean {
     this._data.push({
       id: this.currId,
       ...taskInfo,
     });
 
     this.currId++;
+    return true;
   }
 
-  changeTask(id: number, status: Status) {
+  changeTask(id: number, status: Status): boolean {
     const currTask = this.getTaskByID(id)!;
     currTask.status = status;
+    return true;
   }
 
-  deleteTask(id: number) {
+  deleteTask(id: number): boolean {
     this._data.splice(
       this._data.findIndex((task: ITask) => task.id === id),
       1
     );
+    return this.getTaskByID(id) ? false : true;
   }
 
-  sortTasks(category: Category, v: SortVariant) {
+  sortTasks(category: Category, v: SortVariant): void {
     switch (v) {
       case SortVariant.Ascending: {
         switch (category) {
