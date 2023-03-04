@@ -1,11 +1,18 @@
 import bodyParser from "body-parser";
-import { json, Request, Response, Router, urlencoded } from "express";
+import {
+  json,
+  NextFunction,
+  Request,
+  Response,
+  Router,
+  urlencoded,
+} from "express";
 import { storage } from "../../../app.js";
 import { ITask } from "../../../types.js";
 
 const apiRouter = Router();
 
-apiRouter.use((req, res, next) => {
+apiRouter.use((req: Request, res: Response, next: NextFunction) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Credentials", "true");
   res.setHeader(
@@ -20,13 +27,13 @@ apiRouter.use((req, res, next) => {
 });
 
 apiRouter.get("/api/tasks", (req: Request, res: Response) => {
-  res.end(JSON.stringify(storage.getTasks()));
+  res.status(200).end(JSON.stringify(storage.getTasks()));
 });
 
 apiRouter.post("/api/tasks", (req: Request, res: Response) => {
   const data = JSON.parse(req.body.task);
   const task = storage.addTask(data);
-  res.status(200).end(JSON.stringify(task));
+  res.status(201).end(JSON.stringify(task));
 });
 
 apiRouter.put("/api/tasks/:id", (req: Request, res: Response) => {
@@ -44,9 +51,13 @@ apiRouter.put("/api/tasks/:id", (req: Request, res: Response) => {
 apiRouter.delete("/api/tasks/:id", (req: Request, res: Response) => {
   const id = Number(req.params.id);
 
-  storage.deleteTask(id);
+  const result = storage.deleteTask(id);
 
-  res.status(200).end(JSON.stringify(id));
+  if (result) {
+    res.status(200).end(JSON.stringify(id));
+  } else {
+    res.status(404).end("Not Found");
+  }
 });
 
 export default apiRouter;

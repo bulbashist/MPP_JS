@@ -37,11 +37,11 @@ class TasksStorage {
   }
 
   deleteTask(id: number): boolean {
-    this._data.splice(
-      this._data.findIndex((task: ITask) => task.id === id),
-      1
-    );
-    return this.getTaskByID(id) ? false : true;
+    const index = this._data.findIndex((task: ITask) => task.id === id);
+    if (index === -1) return false;
+
+    this._data.splice(index, 1);
+    return true;
   }
 }
 
