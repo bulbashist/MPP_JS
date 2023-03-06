@@ -23,3 +23,8 @@ export interface ITask {
   status: Status;
   description: string;
 }
+
+export interface IUser {
+  login: string;
+  password: string;
+}

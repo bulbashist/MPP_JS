@@ -8,23 +8,11 @@ import {
   urlencoded,
 } from "express";
 import { storage } from "../../../app.js";
-import { ITask } from "../../../types.js";
+import { isAuthenticated } from "../../middleware/token.js";
 
 const apiRouter = Router();
 
-apiRouter.use((req: Request, res: Response, next: NextFunction) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Credentials", "true");
-  res.setHeader(
-    "Access-Control-Allow-Methods",
-    "GET,HEAD,OPTIONS,POST,PUT,DELETE"
-  );
-  res.setHeader(
-    "Access-Control-Allow-Headers",
-    "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers"
-  );
-  next();
-});
+apiRouter.use(isAuthenticated);
 
 apiRouter.get("/api/tasks", (req: Request, res: Response) => {
   res.status(200).end(JSON.stringify(storage.getTasks()));
@@ -44,7 +32,7 @@ apiRouter.put("/api/tasks/:id", (req: Request, res: Response) => {
   if (task) {
     res.status(200).end(JSON.stringify(task));
   } else {
-    res.status(404).end("Not Found");
+    res.status(404).end();
   }
 });
 
@@ -56,7 +44,7 @@ apiRouter.delete("/api/tasks/:id", (req: Request, res: Response) => {
   if (result) {
     res.status(200).end(JSON.stringify(id));
   } else {
-    res.status(404).end("Not Found");
+    res.status(404).end();
   }
 });
 

@@ -10,7 +10,9 @@ import axios from "axios";
 const getTasks = createAsyncThunk(
   "tasks/getTasks",
   async (): Promise<ITask[]> => {
-    const res = await axios.get<ITask[]>("http://localhost:1337/api/tasks");
+    const res = await axios.get<ITask[]>("http://localhost:1337/api/tasks", {
+      withCredentials: true,
+    });
     return res.data;
   }
 );
@@ -27,6 +29,7 @@ const addTask = createAsyncThunk(
         headers: {
           "Content-Type": "application/json",
         },
+        withCredentials: true,
       }
     );
     return res.data;
@@ -40,6 +43,9 @@ const changeTask = createAsyncThunk(
       `http://localhost:1337/api/tasks/${data.id}`,
       {
         status: JSON.stringify(data.status),
+      },
+      {
+        withCredentials: true,
       }
     );
     return res.data;
@@ -50,7 +56,10 @@ const deleteTask = createAsyncThunk(
   "tasks/deleteTask",
   async (id: number): Promise<number> => {
     const res = await axios.delete<number>(
-      `http://localhost:1337/api/tasks/${id}`
+      `http://localhost:1337/api/tasks/${id}`,
+      {
+        withCredentials: true,
+      }
     );
     return res.data;
   }
